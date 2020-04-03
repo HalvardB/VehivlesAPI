@@ -108,11 +108,10 @@ class CarController {
          *   Update the first line as part of the above implementing.
          */
 
-        Car currentCar = carService.findById(car.getId());
-        currentCar.setId(id);
-        carService.save(currentCar);
+        car.setId(id);
+        car = carService.save(car);
 
-        Resource<Car> resource = assembler.toResource(currentCar);
+        Resource<Car> resource = assembler.toResource(car);
         return ResponseEntity.ok(resource);
     }
 
