@@ -102,6 +102,7 @@ public class CarService {
                     .map(carToBeUpdated -> {
                         carToBeUpdated.setDetails(car.getDetails());
                         carToBeUpdated.setLocation(car.getLocation());
+                        carToBeUpdated.setCondition(car.getCondition());
                         return repository.save(carToBeUpdated);
                     }).orElseThrow(CarNotFoundException::new);
         }
@@ -119,12 +120,7 @@ public class CarService {
          * TODO: Find the car by ID from the `repository` if it exists.
          *   If it does not exist, throw a CarNotFoundException
          */
-        Car car = repository.findById(id).get();
-
-        if(car.getId() == null){
-            throw new CarNotFoundException("Not possible to delete, car not found");
-        }
-
+        Car car = repository.findById(id).orElseThrow(CarNotFoundException::new);
 
         /**
          * TODO: Delete the car from the repository.
