@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/maps")
 public class MapsController {
 
+    // http://localhost:9191/maps?lat=1&lon=2
+
     @GetMapping
     public Address get(@RequestParam Double lat, @RequestParam Double lon) {
         return MockAddressRepository.getRandom();

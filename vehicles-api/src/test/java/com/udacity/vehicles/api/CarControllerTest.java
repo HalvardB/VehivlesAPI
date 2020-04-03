@@ -10,6 +10,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+
+
 
 import com.udacity.vehicles.client.maps.MapsClient;
 import com.udacity.vehicles.client.prices.PriceClient;
@@ -22,7 +26,9 @@ import com.udacity.vehicles.service.CarService;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -101,6 +107,11 @@ public class CarControllerTest {
          *   below (the vehicle will be the first in the list).
          */
 
+        Car car = getCar();
+        car = carService.save(car);
+        List<Car> carList = carService.list();
+        Assert.assertEquals(car.getId(), carList.get(0).getId());
+
     }
 
     /**
@@ -114,6 +125,14 @@ public class CarControllerTest {
          * TODO: Add a test to check that the `get` method works by calling
          *   a vehicle by ID. This should utilize the car from `getCar()` below.
          */
+
+        Car car = getCar();
+        car = carService.save(car);
+
+        Assert.assertEquals(car, carService.findById(car.getId()));
+
+        mvc.perform(get("/cars/1"))
+                .andExpect(status().isOk());
     }
 
     /**
@@ -128,6 +147,10 @@ public class CarControllerTest {
          *   when the `delete` method is called from the Car Controller. This
          *   should utilize the car from `getCar()` below.
          */
+
+        getCar();
+        mvc.perform(delete("/cars/1").contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isNoContent());
     }
 
     /**
