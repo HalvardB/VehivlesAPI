@@ -153,6 +153,17 @@ public class CarControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    @Test
+    public void updateCar() throws Exception {
+        Car car = getCar();
+        car = carService.save(car);
+
+        car.setPrice("USD 199000");
+        Car updatedCar = carService.save(car);
+
+        Assert.assertEquals("USD 199000", updatedCar.getPrice());
+    }
+
     /**
      * Creates an example Car object for use in testing.
      *
